@@ -10,14 +10,19 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 function rr_log( $preempt, $args, $url ) {
-	$remote = get_option('remote_requests');
+	$remote = get_option( 'remote_requests' );
 	$key = md5( $url );
+	if( strpos( $url, '?doing_wp_cron' ) ) {
+		$url_peices = explode( '?', $url );
+		$key = $url_peices[0];
+	}
 	if( isset( $remote[ $key ] ) ) {
 		$remote[ $key ]['count']++;
-
+		$remote[ $key ]['most_recent'] = current_time( 'mysql' );
 	} else {
 		$remote[ $key ]['count'] = 1;
 		$remote[ $key ]['url'] = $url;
+		$remote[ $key ]['most_recent'] = current_time( 'mysql' );
 	}
 	update_option( 'remote_requests', $remote );
 	return $preempt;
@@ -53,6 +58,7 @@ function rr_page_content() {
 		<thead>
 			<tr>
 				<th>URL</th>
+				<th>Most Recent Usage</th>
 				<th>Count</th>
 			</tr>
 		</thead>
@@ -60,6 +66,7 @@ function rr_page_content() {
 	foreach ( $remote_requests as $v ) {
 		echo "<tr>
 				<td>" . $v['url'] . "</td>
+				<td>" . $v['most_recent'] . "</td>
 				<td>" . $v['count'] . "</td>
 			</tr>";
 	}
