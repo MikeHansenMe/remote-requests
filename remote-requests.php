@@ -17,9 +17,15 @@ function rr_log( $preempt, $args, $url ) {
 		$key = $url_peices[0];
 	}
 	if( isset( $remote[ $key ] ) ) {
+		$remote[ $key ]['method'] = $_SERVER['REQUEST_METHOD'];
+		$remote[ $key ]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+		$remote[ $key ]['query_string'] = $_SERVER['QUERY_STRING'];
 		$remote[ $key ]['count']++;
 		$remote[ $key ]['most_recent'] = current_time( 'mysql' );
 	} else {
+		$remote[ $key ]['method'] = $_SERVER['REQUEST_METHOD'];
+		$remote[ $key ]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+		$remote[ $key ]['query_string'] = $_SERVER['QUERY_STRING'];
 		$remote[ $key ]['count'] = 1;
 		$remote[ $key ]['url'] = $url;
 		$remote[ $key ]['most_recent'] = current_time( 'mysql' );
@@ -58,6 +64,9 @@ function rr_page_content() {
 		<thead>
 			<tr>
 				<th>URL</th>
+				<th>Method</th>
+				<th>User Agent</th>
+				<th>Query String</th>
 				<th>Most Recent Usage</th>
 				<th>Count</th>
 			</tr>
@@ -66,6 +75,9 @@ function rr_page_content() {
 	foreach ( $remote_requests as $v ) {
 		echo "<tr>
 				<td>" . $v['url'] . "</td>
+				<td>" . $v['method'] ."</td>
+				<td>" . $v['user_agent'] . "</td>
+				<td>" . $v['query_string'] . "</td>
 				<td>" . $v['most_recent'] . "</td>
 				<td>" . $v['count'] . "</td>
 			</tr>";
@@ -73,6 +85,10 @@ function rr_page_content() {
 	?>
 		<tr>
 			<td><p><a href="tools.php?page=remote-request-log&clear=true">Clear Log</a></p></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
 			<td></td>
 		</tr>
 
