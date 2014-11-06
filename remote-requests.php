@@ -4,7 +4,7 @@ Plugin Name: Remote Requests Log
 Description: This plugin logs remote requests so you can see where WP core, themes, and plugins are communicating with.
 Version: 0.1
 Author: Mike Hansen
-Author URI: http://mikehansen.me
+Author URI: http://mikehansen.me?utm_campaign=plugin&utm_source=rr_wp_plugin
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
